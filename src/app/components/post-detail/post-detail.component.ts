@@ -4,6 +4,9 @@ import {MatButton} from '@angular/material/button';
 import {ActivatedRoute} from '@angular/router';
 import {GraphqlService} from '../../services/graphql.service';
 import {MatDialog} from '@angular/material/dialog';
+import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {MatProgressBar} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-post-detail',
@@ -14,13 +17,19 @@ import {MatDialog} from '@angular/material/dialog';
     MatCardTitle,
     MatCardContent,
     MatCardActions,
-    MatButton
+    MatButton,
+    NgForOf,
+    MatProgressSpinner,
+    MatProgressBar,
+    NgIf,
+    TitleCasePipe
   ],
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.scss'
 })
 export class PostDetailComponent implements OnInit{
   post: any;
+  loading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,8 +39,10 @@ export class PostDetailComponent implements OnInit{
 
   ngOnInit() {
     const postId = this.route.snapshot.paramMap.get('id');
-    this.graphqlService.getPost(1).subscribe((result: any) => {
+    this.loading = true;
+    this.graphqlService.getPost(Number(postId) || 1).subscribe((result: any) => {
       this.post = result.data.post;
+      this.loading = false;
     });
   }
 

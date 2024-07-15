@@ -1,9 +1,9 @@
 <mat-card class="post-detail-card">
   <mat-card-header>
-    <mat-card-title>{{ post.title }}</mat-card-title>
+    <mat-card-title>{{ post?.title | titlecase }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <p>{{ post.body }}</p>
+    <p>{{ post?.body | titlecase }}</p>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button color="primary" (click)="openEditPostDialog()">Edit Post</button>
@@ -15,7 +15,7 @@
   <mat-card-header>
     <mat-card-title>Comments</mat-card-title>
   </mat-card-header>
-  <mat-card-content *ngFor="let comment of post.comments">
+  <mat-card-content *ngFor="let comment of post?.comments">
     <mat-card class="comment-card">
       <mat-card-content>
         <p>{{ comment.name }}</p>

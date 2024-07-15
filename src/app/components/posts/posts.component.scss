@@ -3,13 +3,15 @@
 }
 
 .posts-container {
+  padding-top: 100px;
+  padding-bottom: 24px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
-  padding: 16px;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .post-card {
-  width: calc(33% - 16px);
   margin-bottom: 16px;
 }

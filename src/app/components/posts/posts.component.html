@@ -1,20 +1,46 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="bg-neutral-300">
   <span>Posts</span>
   <span class="spacer"></span>
-  <button mat-raised-button color="accent" (click)="openCreatePostDialog()">Create Post</button>
+  <figure class="w-[40px] h-[40px] rounded-[50%] cursor-pointer">
+    <img class="w-full h-full object-cover" src="https://avatar.iran.liara.run/public/4" alt="userImage">
+  </figure>
 </mat-toolbar>
 
 <div class="posts-container">
-  <mat-card *ngFor="let post of posts" class="post-card">
+  <mat-card class="post-card">
+    <div class="flex items-center justify-center w-full" (click)="openCreatePostDialog()">
+      <div
+        class="flex items-center justify-center w-[80%] py-2 m-4 rounded-[24px] bg-neutral-100 hover:bg-neutral-200 cursor-pointer">
+        <span>Create a post</span></div>
+    </div>
+  </mat-card>
+  <mat-progress-bar mode="query" *ngIf="loading"></mat-progress-bar>
+  <mat-card *ngFor="let post of posts" class="post-card cursor-pointer" (click)="routeToPostDetail(post)">
     <mat-card-header>
-      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-title><span class="font-medium text-sm ">{{ post.title | titlecase }}</span></mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ post.body }}</p>
+      <div class="flex gap-4 mt-2 mb-8">
+        <figure class="w-[34px] h-[34px] rounded-[50%]">
+          <img class="w-full h-full object-cover" src="https://avatar.iran.liara.run/public" alt="userImage">
+        </figure>
+        <div class="flex flex-col">
+          <span>{{ post?.user?.name }}</span>
+          <span class="font-light text-sm">9 min read</span>
+        </div>
+      </div>
+      <p class="text-sm font-light">{{ post.body | titlecase }}</p>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button color="primary" (click)="openEditPostDialog(post)">Edit</button>
-      <button mat-button color="warn" (click)="deletePost($any(post.id))">Delete</button>
-    </mat-card-actions>
+    <div class="flex items-center justify-around py-4" (click)="$event?.stopPropagation()">
+      <div class="flex w-full hover:bg-neutral-100 items-center justify-center rounded mx-2 py-2 cursor-pointer">
+        <i class="pi pi-thumbs-up font-medium"></i>
+      </div>
+      <div class="flex w-full hover:bg-neutral-100 items-center justify-center rounded mx-2 py-2 cursor-pointer">
+        <i class="pi pi-comment font-medium"></i>
+      </div>
+      <div class="flex w-full hover:bg-neutral-100 items-center justify-center rounded mx-2 py-2 cursor-pointer">
+        <i class="pi pi-slack font-medium"></i>
+      </div>
+    </div>
   </mat-card>
 </div>

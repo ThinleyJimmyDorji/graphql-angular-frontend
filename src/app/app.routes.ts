@@ -4,7 +4,8 @@ import {PostDetailComponent} from './components/post-detail/post-detail.componen
 import {UserProfileComponent} from './components/user-profile/user-profile.component';
 
 export const routes: Routes = [
-  { path: '', component: PostsComponent },
+  { path: '', redirectTo: 'posts', pathMatch: 'full' },
+  { path: 'posts', component: PostsComponent },
   { path: 'posts/:id', component: PostDetailComponent },
   { path: 'user-profile', component: UserProfileComponent },
 ];
