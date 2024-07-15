@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <span>Posts</span>
+  <span class="spacer"></span>
+  <button mat-raised-button color="accent" (click)="openCreatePostDialog()">Create Post</button>
+</mat-toolbar>
+
+<div class="posts-container">
+  <mat-card *ngFor="let post of posts" class="post-card">
+    <mat-card-header>
+      <mat-card-title>{{ post.title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ post.body }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="primary" (click)="openEditPostDialog(post)">Edit</button>
+      <button mat-button color="warn" (click)="deletePost($any(post.id))">Delete</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

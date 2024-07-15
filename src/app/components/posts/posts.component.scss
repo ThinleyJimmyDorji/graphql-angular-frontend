@@ -1,0 +1,15 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.posts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+}
+
+.post-card {
+  width: calc(33% - 16px);
+  margin-bottom: 16px;
+}
