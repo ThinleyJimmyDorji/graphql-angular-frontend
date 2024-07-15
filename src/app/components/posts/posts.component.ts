@@ -5,7 +5,7 @@ import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} fr
 import {GraphqlService} from '../../services/graphql.service';
 import {MatDialog} from '@angular/material/dialog';
 import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
-import {Post} from '../../../generated/graphql';
+import {Post, User} from '../../../generated/graphql';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {MatIcon} from '@angular/material/icon';
@@ -60,6 +60,4 @@ export class PostsComponent implements OnInit{
       this.posts = this.posts.filter(post => post.id !== id);
     });
   }
-
-  protected readonly event = event;
 }

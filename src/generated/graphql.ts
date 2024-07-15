@@ -472,6 +472,7 @@ export interface User {
   todos?: Maybe<TodosPage>;
   username?: Maybe<Scalars['String']['output']>;
   website?: Maybe<Scalars['String']['output']>;
+  avatarUrl?: Maybe<Scalars['String']>;
 }
 
 

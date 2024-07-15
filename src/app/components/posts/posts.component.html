@@ -15,14 +15,14 @@
     </div>
   </mat-card>
   <mat-progress-bar mode="query" *ngIf="loading"></mat-progress-bar>
-  <mat-card *ngFor="let post of posts" class="post-card cursor-pointer" (click)="routeToPostDetail(post)">
+  <mat-card *ngFor="let post of posts; let i=index" class="post-card cursor-pointer" (click)="routeToPostDetail(post)">
     <mat-card-header>
       <mat-card-title><span class="font-medium text-sm ">{{ post.title | titlecase }}</span></mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="flex gap-4 mt-2 mb-8">
         <figure class="w-[34px] h-[34px] rounded-[50%]">
-          <img class="w-full h-full object-cover" src="https://avatar.iran.liara.run/public" alt="userImage">
+          <img class="w-full h-full object-cover" src="https://avatar.iran.liara.run/public/{{i}}" alt="userImage">
         </figure>
         <div class="flex flex-col">
           <span>{{ post?.user?.name }}</span>
