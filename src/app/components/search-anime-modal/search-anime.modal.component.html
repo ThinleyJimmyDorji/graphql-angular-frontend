@@ -1,0 +1,23 @@
+<div mat-dialog-title class="flex">
+  <h2 class="text-black-[0.87] my-0">Search Anime</h2>
+</div>
+
+<mat-dialog-content>
+  <form class="example-form" [formGroup]="form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Search</mat-label>
+      <input type="text"
+             matInput
+             formControlName="search"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="routeToAnimeDetail($event)">
+        @for (option of mediaSearchResults$ | async; track option) {
+          <mat-option [value]="option">
+            <span>{{option['title']?.['english'] || option['title']?.['native']}}</span>
+            <figure class="my-2"><img src="{{option['bannerImage']}}" alt=""></figure>
+          </mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>

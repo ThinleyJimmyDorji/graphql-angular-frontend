@@ -30,9 +30,6 @@ export class UserProfileComponent implements OnInit{
 
   ngOnInit() {
     // Fetch user profile data
-    this.graphqlService.getUserProfile(1).subscribe((result: any) => {
-      this.user = result.data.user;
-    });
   }
 
   updateUserProfile() {

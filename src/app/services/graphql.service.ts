@@ -1,132 +1,132 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql} from 'apollo-angular';
+import {DocumentNode, TypedDocumentNode} from '@apollo/client';
+import {map, Observable} from 'rxjs';
+import {Media, Page, PageInfo} from '../../generated/graphql';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphqlService {
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private http: HttpClient) { }
 
-  getPost(id: number) {
+  getMultipleMedia(search?: string): Observable<{ Page: { media: Media[], pageInfo: PageInfo }}> {
     return this.apollo.query({
       query: gql`
-        query post($id: ID!){
-          post(id: $id) {
-            id
-            body
-            title
-            user {
-              name
+        query getMediaLists($page: Int, $perPage: Int, $search: String)  {
+          Page(page: $page, perPage: $perPage ) {
+            pageInfo {
+              currentPage
+              hasNextPage
+              lastPage
+              perPage
+              total
             }
-            comments {
-              data {
-                id
-              }
-            }
-          }
-        }
-      `,
-      variables: {id}
-    });
-  }
-
-  deleteComment(id: number) {
-    return this.apollo.mutate({
-      mutation: gql`
-        mutation deleteComment($id: ID!){
-          deleteComment(id: $id)
-        }
-      `,
-      variables: {id}
-    });
-  }
-
-  getUserProfile(id: number) {
-    return this.apollo.query({
-      query: gql`
-        query user($id: ID!){
-          user(id: $id) {
-            id
-            name
-          }
-        }
-      `,
-      variables: {id}
-    });
-  }
-  getPosts() {
-    return this.apollo.query({
-      query: gql`
-        query {
-          posts {
-            data {
+            media(search: $search) {
               id
-              title
-              body
-              user {
-                id
-                name
+              siteUrl
+              bannerImage
+              title {
+                english
+                native
+                romaji
+                userPreferred
               }
-              comments {
-                data {
-                  id
-                  name
-                  body
-                }
+
+              episodes
+              rankings {
+                season
+                type
+                year
+                rank
               }
+
+#              characters {
+#                nodes {
+#                  id
+#                  image {
+#                    medium
+#                    large
+#                  }
+#                  name {
+#                    first
+#                    middle
+#                    last
+#                    userPreferred
+#                    full
+#                    native
+#                  }
+#                }
+#              }
+
+#              reviews {
+#                edges {
+#                  node {
+#                    id
+#                    user {
+#                      id
+#                      name
+#                    }
+#                  }
+#                }
+#                nodes {
+#                  id
+#                  body
+#                  score
+#                  mediaType
+#                  userRating
+#                  summary
+#                }
+#              }
+              description
             }
           }
         }
-      `,
-    });
+      ` as (DocumentNode | TypedDocumentNode),
+      variables: {
+        page: 1,
+        perPage: 10,
+        search
+      },
+      fetchPolicy: 'no-cache'
+    }).pipe(map(response => response.data)) as Observable<{ Page: { media: Media[], pageInfo: PageInfo }}>
   }
 
-  createPost(title: string, body: string) {
+  getMediaByID(id: number): Observable<Media> {
+    return this.apollo.query({
+      query: gql`
+        query getMediaByID($id: Int)  {
+          Media(id: $id) {
+            id
+            type
+            title {
+              native
+              userPreferred
+              english
+            }
+          }
+        }
+      ` as (DocumentNode | TypedDocumentNode),
+      variables: {
+        id
+      },
+      fetchPolicy: 'no-cache'
+    }).pipe(map(response => response.data)) as Observable<Media>
+  }
+
+  toggleFollow(userId: number) {
     return this.apollo.mutate({
       mutation: gql`
-        mutation($input: CreatePostInput!) {
-          createPost(input: $input) {
+        mutation toggleFollow($userId: Int) {
+          ToggleFollow (userId: $userId){
+            name
             id
-            title
-            body
           }
         }
       `,
-      variables: {
-        input: { title, body },
-      },
-    });
-  }
-
-  updatePost(id: string, title: string, body: string) {
-    return this.apollo.mutate({
-      mutation: gql`
-        mutation($id: ID!, $input: UpdatePostInput!) {
-          updatePost(id: $id, input: $input) {
-            id
-            title
-            body
-          }
-        }
-      `,
-      variables: {
-        id,
-        input: { title, body },
-      },
-    });
-  }
-
-  deletePost(id: string) {
-    return this.apollo.mutate({
-      mutation: gql`
-        mutation($id: ID!) {
-          deletePost(id: $id)
-        }
-      `,
-      variables: {
-        id,
-      },
-    });
+      variables: {userId}
+    })
   }
 }
