@@ -4,7 +4,7 @@ import {MatButton} from '@angular/material/button';
 import {ActivatedRoute} from '@angular/router';
 import {GraphqlService} from '../../services/graphql.service';
 import {MatDialog} from '@angular/material/dialog';
-import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
+import {JsonPipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {Media} from '../../../generated/graphql';
@@ -23,7 +23,8 @@ import {Media} from '../../../generated/graphql';
     MatProgressSpinner,
     MatProgressBar,
     NgIf,
-    TitleCasePipe
+    TitleCasePipe,
+    JsonPipe
   ],
   templateUrl: './media-detail.component.html',
   styleUrl: './media-detail.component.scss'

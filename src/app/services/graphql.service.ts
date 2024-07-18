@@ -4,6 +4,7 @@ import {DocumentNode, TypedDocumentNode} from '@apollo/client';
 import {map, Observable} from 'rxjs';
 import {Media, Page, PageInfo} from '../../generated/graphql';
 import {HttpClient} from '@angular/common/http';
+import {MEDIA_LIST_QUERY, MEDIA_QUERY} from '../misc/query';
 
 @Injectable({
   providedIn: 'root'
@@ -14,77 +15,7 @@ export class GraphqlService {
 
   getMultipleMedia(search?: string): Observable<{ Page: { media: Media[], pageInfo: PageInfo }}> {
     return this.apollo.query({
-      query: gql`
-        query getMediaLists($page: Int, $perPage: Int, $search: String)  {
-          Page(page: $page, perPage: $perPage ) {
-            pageInfo {
-              currentPage
-              hasNextPage
-              lastPage
-              perPage
-              total
-            }
-            media(search: $search) {
-              id
-              siteUrl
-              bannerImage
-              title {
-                english
-                native
-                romaji
-                userPreferred
-              }
-
-              episodes
-              rankings {
-                season
-                type
-                year
-                rank
-              }
-
-#              characters {
-#                nodes {
-#                  id
-#                  image {
-#                    medium
-#                    large
-#                  }
-#                  name {
-#                    first
-#                    middle
-#                    last
-#                    userPreferred
-#                    full
-#                    native
-#                  }
-#                }
-#              }
-
-#              reviews {
-#                edges {
-#                  node {
-#                    id
-#                    user {
-#                      id
-#                      name
-#                    }
-#                  }
-#                }
-#                nodes {
-#                  id
-#                  body
-#                  score
-#                  mediaType
-#                  userRating
-#                  summary
-#                }
-#              }
-              description
-            }
-          }
-        }
-      ` as (DocumentNode | TypedDocumentNode),
+      query: MEDIA_LIST_QUERY,
       variables: {
         page: 1,
         perPage: 10,
@@ -96,19 +27,7 @@ export class GraphqlService {
 
   getMediaByID(id: number): Observable<Media> {
     return this.apollo.query({
-      query: gql`
-        query getMediaByID($id: Int)  {
-          Media(id: $id) {
-            id
-            type
-            title {
-              native
-              userPreferred
-              english
-            }
-          }
-        }
-      ` as (DocumentNode | TypedDocumentNode),
+      query: MEDIA_QUERY,
       variables: {
         id
       },
