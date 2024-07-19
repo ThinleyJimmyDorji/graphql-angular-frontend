@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql} from 'apollo-angular';
-import {map, Observable} from 'rxjs';
-import {Media, Page, PageInfo, Thread} from '../../generated/graphql';
+import {map, Observable, tap} from 'rxjs';
+import {LikeableType, Media, Page, PageInfo, Thread} from '../../generated/graphql';
 import {HttpClient} from '@angular/common/http';
 import {MEDIA_LIST_QUERY, MEDIA_QUERY, THREAD_COMMENT_LIST_QUERY, THREAD_LIST_QUERY, THREAD_QUERY} from '../misc/query';
-import {TOGGLE_FAVORITE_MUTATION} from '../misc/mutation';
+import {TOGGLE_FAVORITE_MUTATION, TOGGLE_LIKE} from '../misc/mutation';
 
 @Injectable({
   providedIn: 'root'
@@ -46,14 +46,25 @@ export class GraphqlService {
     }).pipe(map(response => response.data)) as Observable<{ Page: { threads: Thread[], pageInfo: PageInfo }}>
   }
 
-  getThreadComments(threadId: number): Observable<{ Page: { threadComments: Thread[], pageInfo: PageInfo }}> {
+  getThreadComments(threadId: number, skip?: boolean): Observable<{ Page: { threadComments: Thread[], pageInfo: PageInfo }}>{
     return this.apollo.query({
       query: THREAD_COMMENT_LIST_QUERY,
       variables: {
-        threadId: 3
+        threadId
       },
       fetchPolicy: 'no-cache'
     }).pipe(map(response => response.data)) as Observable<{ Page: { threadComments: Thread[], pageInfo: PageInfo }}>
+
+    // @ts-ignore
+    /*this.apollo.watchQuery({
+      query: THREAD_COMMENT_LIST_QUERY,
+      variables: {
+        threadId
+      },
+      pollInterval: 500,
+      skipPollAttempt:  () => skip || false,
+      fetchPolicy: 'no-cache'
+    }).valueChanges.pipe(tap((res) => console.log(res))).subscribe();*/
   }
 
   getThread(threadId: number): Observable<Thread> {
@@ -74,17 +85,11 @@ export class GraphqlService {
     }).pipe(map((response) => response.data))
   }
 
-  toggleFollow(userId: number) {
+  toggleLike(id: number, type: LikeableType) {
     return this.apollo.mutate({
-      mutation: gql`
-        mutation toggleFollow($userId: Int) {
-          ToggleFollow (userId: $userId){
-            name
-            id
-          }
-        }
-      `,
-      variables: {userId}
+      mutation: TOGGLE_LIKE,
+      variables: {id, type},
+      fetchPolicy: 'no-cache'
     })
   }
 }

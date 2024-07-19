@@ -34,15 +34,15 @@ export const THREAD_LIST_QUERY:(DocumentNode | TypedDocumentNode) = gql`
   }
 `
 export const THREAD_COMMENT_LIST_QUERY:(DocumentNode | TypedDocumentNode) = gql`
-  query getThreadList($page: Int, $perPage: Int, $threadId: Int) {
-    Page(perPage: $perPage, page: $page) {
+  query getThreadComments($page: Int, $perPage: Int, $threadId: Int) {
+    Page(perPage: $perPage, page: $page, ) {
       pageInfo {
         perPage
         total
         currentPage
         hasNextPage
       }
-      threadComments(threadId: $threadId) {
+      threadComments(threadId: $threadId, ) {
         threadId
         id
         likeCount

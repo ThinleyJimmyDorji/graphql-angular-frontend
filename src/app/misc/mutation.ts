@@ -14,3 +14,19 @@ export const TOGGLE_FAVORITE_MUTATION = gql`
     }
   }
 `
+
+export const TOGGLE_LIKE = gql`
+  mutation toggleLike($id: Int, $type: LikeableType) {
+    ToggleLike(id: $id, type: $type) {
+      id
+    }
+  }
+`
+
+export const LIKE_THREAD_COMMENT = gql`
+  mutation likeThreadComment($id: Int, $type: LikeableType) {
+    ToggleLike(id: $id, type: $type) {
+      id
+    }
+  }
+`
