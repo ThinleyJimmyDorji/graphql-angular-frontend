@@ -56,8 +56,6 @@ export class MediaListComponent implements OnInit{
       this.loading = false;
     });
   }
-
-  toggleFollow = () => this.graphqlService.toggleFollow(1).subscribe();
   routeToPostDetail(post: any): void {
     this.router.navigate([post.id], {relativeTo: this.activatedRoute });
   }

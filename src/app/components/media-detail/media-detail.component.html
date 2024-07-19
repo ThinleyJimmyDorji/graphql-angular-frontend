@@ -1,5 +1,46 @@
-<div class="w-full">
-  <figure class="w-full h-full">
-    <img src="{{media?.bannerImage}}" alt="">
-  </figure>
-</div>
+<section class="overflow-y-scroll h-screen" *ngIf="media">
+  <div class="mt-2 mb-8">
+    <figure class="w-full h-auto">
+      <img [src]="media?.bannerImage" alt="userImage">
+    </figure>
+    <div class="flex gap-2">
+      <div class="flex items-center justify-center rounded-[8px] bg-green-100 text-green-500 my-4 px-2 cursor-pointer">
+        Add to Collection
+      </div>
+      <div class="flex items-center justify-center rounded-[8px] bg-red-100 text-red-400 my-4 mx-4 cursor-pointer" (click)="toggleFavorite()">
+        <i *ngIf="!media?.isFavourite" class="pi pi-heart my-2 mx-2"></i>
+        <i *ngIf="media?.isFavourite" class="pi pi-heart-fill my-2 mx-2"></i>
+      </div>
+      <div></div>
+    </div>
+    <span class="text-[13px] font-light">{{ media?.description }}</span>
+  </div>
+
+  <div>
+    <span>Characters</span>
+    <div class="flex flex-wrap">
+      <div *ngFor="let character of media?.characters?.nodes" class="w-1/6 p-4 box-border">
+        <div class="flex gap-1 bg-neutral-100 rounded">
+          <figure class="w-1/4 h-auto ">
+            <img class="rounded" [src]="character?.image?.large" alt="">
+          </figure>
+          <span class="text-[12px]">
+            {{ character?.name?.full }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>Threads</p>
+  <div class="flex flex-wrap mb-20">
+    <div *ngFor="let thread of threads" class="w-1/2 p-4 box-border">
+      <div class="flex gap-2 bg-neutral-100 rounded cursor-pointer" (click)="routeToThreadsComponent(thread)">
+        <figure class="w-[30px] h-[30px] ">
+          <img class="rounded" [src]="thread.user?.avatar?.medium" alt="">
+        </figure>
+        <span>{{thread.title}}</span>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql} from 'apollo-angular';
-import {DocumentNode, TypedDocumentNode} from '@apollo/client';
 import {map, Observable} from 'rxjs';
-import {Media, Page, PageInfo} from '../../generated/graphql';
+import {Media, Page, PageInfo, Thread} from '../../generated/graphql';
 import {HttpClient} from '@angular/common/http';
-import {MEDIA_LIST_QUERY, MEDIA_QUERY} from '../misc/query';
+import {MEDIA_LIST_QUERY, MEDIA_QUERY, THREAD_COMMENT_LIST_QUERY, THREAD_LIST_QUERY, THREAD_QUERY} from '../misc/query';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +28,41 @@ export class GraphqlService {
     return this.apollo.query({
       query: MEDIA_QUERY,
       variables: {
-        id
+        id,
+        perPage: 18
       },
       fetchPolicy: 'no-cache'
-    }).pipe(map(response => response.data)) as Observable<Media>
+    }).pipe(map(response => response.data['Media'])) as Observable<Media>
+  }
+
+  getThreads(): Observable<{ Page: { threads: Thread[], pageInfo: PageInfo }}> {
+    return this.apollo.query({
+      query: THREAD_LIST_QUERY,
+      variables: {
+        perPage: 3
+      },
+      fetchPolicy: 'no-cache'
+    }).pipe(map(response => response.data)) as Observable<{ Page: { threads: Thread[], pageInfo: PageInfo }}>
+  }
+
+  getThreadComments(threadId: number): Observable<{ Page: { threadComments: Thread[], pageInfo: PageInfo }}> {
+    return this.apollo.query({
+      query: THREAD_COMMENT_LIST_QUERY,
+      variables: {
+        threadId: 3
+      },
+      fetchPolicy: 'no-cache'
+    }).pipe(map(response => response.data)) as Observable<{ Page: { threadComments: Thread[], pageInfo: PageInfo }}>
+  }
+
+  getThread(threadId: number): Observable<Thread> {
+    return this.apollo.query({
+      query: THREAD_QUERY,
+      variables: {
+        id: threadId
+      },
+      fetchPolicy: 'no-cache'
+    }).pipe(map(response => response.data['Thread'])) as Observable<Thread>
   }
 
   toggleFollow(userId: number) {

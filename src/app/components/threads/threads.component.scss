@@ -1,0 +1,8 @@
+.mat-mdc-form-field {
+  font-size: 11px !important;
+  height: 100px;
+}
+
+.mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
+  font-size: 14px !important;
+}
