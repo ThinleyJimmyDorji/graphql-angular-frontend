@@ -33,7 +33,6 @@ export const THREAD_LIST_QUERY:(DocumentNode | TypedDocumentNode) = gql`
     }
   }
 `
-
 export const THREAD_COMMENT_LIST_QUERY:(DocumentNode | TypedDocumentNode) = gql`
   query getThreadList($page: Int, $perPage: Int, $threadId: Int) {
     Page(perPage: $perPage, page: $page) {
@@ -64,7 +63,6 @@ export const THREAD_COMMENT_LIST_QUERY:(DocumentNode | TypedDocumentNode) = gql`
     }
   }
 `
-
 export const THREAD_QUERY:(DocumentNode | TypedDocumentNode) = gql`
   query getThread($id: Int) {
     Thread(id: $id) {
@@ -159,7 +157,6 @@ export const MEDIA_LIST_QUERY:(DocumentNode | TypedDocumentNode) = gql`
     }
   }
 `;
-
 export const MEDIA_QUERY: DocumentNode | TypedDocumentNode = gql`
   query getMediaByID($id: Int, $perPage: Int)  {
     Media(id: $id) {
@@ -195,7 +192,6 @@ export const MEDIA_QUERY: DocumentNode | TypedDocumentNode = gql`
 
         }
       }
-
       title {
         native
         userPreferred

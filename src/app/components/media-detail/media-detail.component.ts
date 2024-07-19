@@ -8,6 +8,7 @@ import {JsonPipe, NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatProgressBar} from '@angular/material/progress-bar';
 import {Media, Thread} from '../../../generated/graphql';
+import {Observable, of, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-media-detail',
@@ -48,13 +49,17 @@ export class MediaDetailComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.getThreads();
+    this.getMediaById();
+  }
+
+  getMediaById(): void {
     const mediaID = this.route.snapshot.paramMap.get('id');
     this.loading = true;
     this.graphqlService.getMediaByID(Number(mediaID) || 1).subscribe((media) => {
       this.media = media;
       this.loading = false;
     });
-    this.getThreads();
   }
 
   routeToThreadsComponent(thread: Thread) {
@@ -62,6 +67,10 @@ export class MediaDetailComponent implements OnInit{
   }
 
   toggleFavorite() {
-    // Implement toggle logic
+    this.graphqlService.toggleFavorite(this.media?.id).pipe(switchMap(() => {
+      debugger
+      this.getMediaById();
+      return of(null);
+    })).subscribe();
   }
 }

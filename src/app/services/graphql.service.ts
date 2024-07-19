@@ -4,6 +4,7 @@ import {map, Observable} from 'rxjs';
 import {Media, Page, PageInfo, Thread} from '../../generated/graphql';
 import {HttpClient} from '@angular/common/http';
 import {MEDIA_LIST_QUERY, MEDIA_QUERY, THREAD_COMMENT_LIST_QUERY, THREAD_LIST_QUERY, THREAD_QUERY} from '../misc/query';
+import {TOGGLE_FAVORITE_MUTATION} from '../misc/mutation';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +64,14 @@ export class GraphqlService {
       },
       fetchPolicy: 'no-cache'
     }).pipe(map(response => response.data['Thread'])) as Observable<Thread>
+  }
+
+  toggleFavorite(animeId: number): Observable<any> {
+    return this.apollo.mutate({
+      mutation: TOGGLE_FAVORITE_MUTATION,
+      variables: {  animeId },
+      fetchPolicy: 'no-cache'
+    }).pipe(map((response) => response.data))
   }
 
   toggleFollow(userId: number) {
